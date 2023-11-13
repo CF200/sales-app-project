@@ -11,6 +11,7 @@ import {
     FormLabel,
     FormControl,
     Button,
+    Typography ,
 } from '@mui/material'
 import BaseCard from '@/app/(DashboardLayout)/components/shared/BaseCard';
 import ProductPerfomance from "@/app/(DashboardLayout)/components/dashboard/ProductPerformance";
@@ -24,6 +25,9 @@ import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 import React from 'react';
 import './page.css';
+import UpdateIcon from '@mui/icons-material/Update';
+import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
 const Item = styled(Paper)(({ theme }) => ({
     ...theme.typography.body1,
@@ -59,7 +63,7 @@ const lightTheme = createTheme({ palette: { mode: 'light' } });
                 <Item>Cliente</Item>
               </Grid>
 
-              <Grid xs={9}>
+              <Grid xs={8}>
                 
                   <Autocomplete
                   {...defaultProps}
@@ -67,31 +71,39 @@ const lightTheme = createTheme({ palette: { mode: 'light' } });
                   disableCloseOnSelect
                   renderInput={(params) => (
                     <TextField {...params} label="disableCloseOnSelect" variant="standard" />
+                    
                   )}
                 />
+              </Grid>
+              <Grid xs={1}>
+                <Button style={{ color: 'black',minWidth:'0px' }} startIcon={ <ArrowForwardIcon style={{ marginTop:'1rem'}} />}></Button>
               </Grid>
             
           </Grid>
 
           <Grid container xs={6}>
-            <Grid  xs={12}>
+            <Grid  xs={12}style={{ fontWeight: 'bold'}}>
               Expiraciòn
             </Grid>
             <Grid container xs={12}>
-                  
-                <Grid xs={8} display={'flex'}>
-                  
-                    <p>Lista de precio</p>
-                    <p className='left'>Tarifa Pùblica (PEN)</p>
-                  
-                </Grid>
+              <Grid xs={8}>
+                <Box display="flex" alignItems="center">
+                  <Typography variant="body1"  gutterBottom style={{ fontWeight: 'bold', display:'flex'}}>
+                    Lista de precio 
+                    <a href="" className="update">
+                      <QuestionMarkIcon style={{ fontSize: 12, marginBottom:5}} />
+                    </a>
+                  </Typography>
+                  <p className='left'>Tarifa Pública (PEN)</p>
+                </Box>
+              </Grid>
 
-                <Grid xs={4}>
-                  <p>Actualizar precio</p>
+                <Grid xs={4} display={'flex'}>
+                  <a  href="" className="update"> <UpdateIcon />Actualizar precio</a>
                 </Grid>
                 
             </Grid>
-            <Grid  xs={12}>
+            <Grid style={{ fontWeight: 'bold'}} xs={12}>
               Plazos de pago
             </Grid>
           </Grid>
