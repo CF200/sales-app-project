@@ -9,25 +9,41 @@ import {
     RadioGroup,
     Radio,
     FormLabel,
+    Box ,
+    MenuItem,
+    InputLabel,
+    Select,
     FormControl,
     Button,
     Typography ,
-} from '@mui/material'
+    Table ,
+    TableBody,
+    TableCell ,
+    TableContainer,
+    TableHead ,TableRow,
+} from '@mui/material';
+
 import BaseCard from '@/app/(DashboardLayout)/components/shared/BaseCard';
 import ProductPerfomance from "@/app/(DashboardLayout)/components/dashboard/ProductPerformance";
 import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
 import Autocomplete from '@mui/material/Autocomplete';
 import Grid from '@mui/material/Unstable_Grid2'; // Grid version 2
-import Box from '@mui/material/Box';
 import Tab from '@mui/material/Tab';
 import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
-import React from 'react';
 import './page.css';
 import UpdateIcon from '@mui/icons-material/Update';
 import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+
+import React, {useEffect, useState} from 'react'
+
+import axios from 'axios';
+
+
+const endpoint = 'http://127.0.0.1:8080/api/products'; // Ruta de la API
+
 
 const Item = styled(Paper)(({ theme }) => ({
     ...theme.typography.body1,
@@ -41,7 +57,8 @@ const darkTheme = createTheme({ palette: { mode: 'dark' } });
 const lightTheme = createTheme({ palette: { mode: 'light' } });
 
 
-  export default function Forms() {
+function Forms() {
+
     const defaultProps = {
       options: top100Films,
       getOptionLabel: (option: FilmOptionType) => option.label,
@@ -53,6 +70,35 @@ const lightTheme = createTheme({ palette: { mode: 'light' } });
       setValue(newValue);
     };
 
+
+    //////
+    // const [products, setProducts] = useState<any[]>([]);
+    // const token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC8xMjcuMC4wLjE6ODA4MFwvYXBpXC9hdXRoXC9sb2dpbiIsImlhdCI6MTcwMDUyMjg2MiwiZXhwIjoxNzAzMTE0ODYyLCJuYmYiOjE3MDA1MjI4NjIsImp0aSI6IkRtMnRxdjBKM2RVQUo2SjQiLCJzdWIiOiIxIiwicHJ2IjoiMjNiZDVjODk0OWY2MDBhZGIzOWU3MDFjNDAwODcyZGI3YTU5NzZmNyJ9.TVN9dc22KVx-UmmPBhlOMnODkhai5ALzPXf7WaCgFSk';
+ 
+    // useEffect(() => {
+    //   const fetchData = async () => {
+    //     try {
+    //       const response = await axios.get(endpoint, {
+    //         headers: {
+    //           Authorization: `Bearer ${token}`,
+    //         },
+    //       });
+    //       setProducts(response.data.data);
+    //     } catch (error) {
+    //       console.error('Error fetching products:', error);
+    //     }
+    //   };
+  
+    //   fetchData();
+    // }, [token]); //
+      
+
+    const [product, setProduct] = useState('');
+
+    const handleChan = (e) => {
+      const  value=e.target.value;
+      setProduct(value);
+    };
   
     return (
       <Box sx={{ flexGrow: 1 }}>
@@ -142,12 +188,48 @@ const lightTheme = createTheme({ palette: { mode: 'light' } });
 
              
             </TabPanel>
-            
+            <TabPanel style={{padding:'24px 0'}} value="2">
+            <TableContainer >
+              <Table  sx={{ minWidth: 650 }} aria-label="simple table">
+                <TableHead style={{padding:'24px 0'}}>
+                  <TableRow style={{background:'#ebebeb'}}>
+                    <TableCell>Product</TableCell>
+                    <TableCell>Description</TableCell>
+                    <TableCell>Cantidad</TableCell>
+                    <TableCell align="right">Precio</TableCell>
+                    <TableCell align="right">Impuestos</TableCell>
+                    <TableCell align="right">Desc %</TableCell>
+                    <TableCell align="right">Subtotal</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  
+                </TableBody>
+                
+              </Table>
+              <Box style={{margin:'15px 0'}} sx={{ maxWidth: 200 }}>
+                <FormControl  color={'info'} fullWidth>
+                    <InputLabel >Agregar Product</InputLabel>
+                    <Select
+                      labelId="demo-simple-select-label"
+                      id="demo-simple-select"
+                      value={product}
+                      label="Age"
+                      onChange={handleChan}
+                    >
+                      <MenuItem value={10}>1</MenuItem>
+                      <MenuItem value={20}>2</MenuItem>
+                      <MenuItem value={30}>3</MenuItem>
+                    </Select>
+                </FormControl>
+              </Box>
+          </TableContainer>
+            </TabPanel>
+            <TabPanel value="3">Item Three</TabPanel>
             <p className='too-light'>Términos y condiciones...</p>
 
-            <TabPanel value="2">Item Two</TabPanel>
-            <TabPanel value="3">Item Three</TabPanel>
           </TabContext>
+          
         </Box>
 
         <Grid container spacing={2}>
@@ -174,7 +256,7 @@ const lightTheme = createTheme({ palette: { mode: 'light' } });
 
     );
   }
-
+export default Forms;
 
 interface FilmOptionType {
     label: string;
