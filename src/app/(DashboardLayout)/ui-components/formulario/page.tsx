@@ -40,6 +40,7 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import React, {useEffect, useState} from 'react'
 
 import axios from 'axios';
+import { getProducts } from '../../services/product_service';
 
 
 const endpoint = 'http://127.0.0.1:8080/api/products'; // Ruta de la API
@@ -92,14 +93,17 @@ function Forms() {
     //   fetchData();
     // }, [token]); //
       
+    const [products, setProducts] = useState<any | null>();
 
-    const [product, setProduct] = useState('');
-
-    const handleChan = (e) => {
-      const  value=e.target.value;
-      setProduct(value);
-    };
-  
+    useEffect(() => {
+        getProducts()
+            .then((p) => setProducts(p))
+            .catch((e: Error) => console.log(e));
+    }, []);
+    if (!products) return null;
+    // console.log('Result');
+    const productList =products.props.products;
+    // console.log(JSON.stringify(productList));
     return (
       <Box sx={{ flexGrow: 1 }}>
         <Grid container spacing={2}>
@@ -203,8 +207,18 @@ function Forms() {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  
                 </TableBody>
+                {/* <TableBody>
+                <TableRow key="1">
+                    <TableCell>Product</TableCell>
+                    <TableCell>Description</TableCell>
+                    <TableCell>Cantidad</TableCell>
+                    <TableCell align="right">Precio</TableCell>
+                    <TableCell align="right">Impuestos</TableCell>
+                    <TableCell align="right">Desc %</TableCell>
+                    <TableCell align="right">Subtotal</TableCell>
+                    </TableRow>
+                </TableBody> */}
                 
               </Table>
               <Box style={{margin:'15px 0'}} sx={{ maxWidth: 200 }}>
@@ -213,13 +227,15 @@ function Forms() {
                     <Select
                       labelId="demo-simple-select-label"
                       id="demo-simple-select"
-                      value={product}
+                      value={products}
                       label="Age"
-                      onChange={handleChan}
+                      // onChange={handleChan}
                     >
-                      <MenuItem value={10}>1</MenuItem>
-                      <MenuItem value={20}>2</MenuItem>
-                      <MenuItem value={30}>3</MenuItem>
+                              {productList.map((data) => (
+                      <MenuItem
+                      key={data.id}
+                      value={data.id}>{data.title}</MenuItem>
+                         ))}
                     </Select>
                 </FormControl>
               </Box>
